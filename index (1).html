@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adnan Vohra — IT Systems Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a12;
+    --bg2: #080e1a;
+    --panel: rgba(10,20,40,0.85);
+    --cyan: #00e5ff;
+    --cyan2: #00b4cc;
+    --blue: #1565c0;
+    --accent: #0ff;
+    --grid: rgba(0,229,255,0.04);
+    --border: rgba(0,229,255,0.15);
+    --text: #cdd8e8;
+    --dim: #607090;
+    --white: #e8f2ff;
+    --glow: 0 0 20px rgba(0,229,255,0.3);
+    --glow2: 0 0 40px rgba(0,229,255,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    line-height: 1.7;
+  }
+
+  /* ── CANVAS BG ── */
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.55;
+  }
+
+  /* ── GRID OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 60px;
+    background: rgba(5,10,18,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    color: var(--cyan);
+    letter-spacing: 2px;
+  }
+
+  .nav-logo span { color: var(--dim); }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 36px;
+  }
+
+  nav ul a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--dim);
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  nav ul a:hover { color: var(--cyan); }
+
+  /* ── WRAPPER ── */
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  section { padding: 100px 0 60px; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    position: relative;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .hero-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--cyan);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.05;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.35s forwards;
+  }
+
+  .hero-name em {
+    font-style: normal;
+    color: var(--cyan);
+  }
+
+  .hero-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    color: var(--dim);
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.5s forwards;
+  }
+
+  .hero-summary {
+    font-size: 1rem;
+    color: var(--text);
+    max-width: 520px;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.65s forwards;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    background: transparent;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--cyan);
+    transform: translateX(-101%);
+    transition: transform 0.25s;
+    z-index: -1;
+  }
+
+  .btn:hover::before { transform: translateX(0); }
+  .btn:hover { color: var(--bg); }
+
+  .btn-fill {
+    background: var(--cyan);
+    color: var(--bg);
+  }
+  .btn-fill::before { background: var(--bg2); }
+  .btn-fill:hover { color: var(--cyan); }
+
+  /* ── HERO DIAGRAM ── */
+  .hero-diagram {
+    opacity: 0;
+    animation: fadeIn 1.2s ease 1s forwards;
+  }
+
+  .hero-diagram svg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 30px rgba(0,229,255,0.15));
+  }
+
+  /* ── CONTACT BAR ── */
+  .contact-bar {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.5s forwards;
+  }
+
+  .contact-item {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--dim);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .contact-item svg { color: var(--cyan); }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 48px;
+    line-height: 1.1;
+  }
+
+  .section-line {
+    width: 60px;
+    height: 2px;
+    background: var(--cyan);
+    margin-bottom: 48px;
+    box-shadow: var(--glow);
+  }
+
+  /* ── EXPERIENCE ── */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--cyan), transparent);
+  }
+
+  .exp-card {
+    position: relative;
+    margin-bottom: 48px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 32px;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .exp-card::before {
+    content: '';
+    position: absolute;
+    left: -38px;
+    top: 32px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: var(--glow);
+  }
+
+  .exp-card:hover {
+    border-color: var(--cyan2);
+    box-shadow: var(--glow2);
+  }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .exp-company {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .exp-dates {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--cyan);
+    letter-spacing: 1px;
+    background: rgba(0,229,255,0.08);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+  }
+
+  .exp-role {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--cyan2);
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+
+  .exp-location {
+    font-size: 0.8rem;
+    color: var(--dim);
+    margin-bottom: 16px;
+  }
+
+  .exp-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .exp-bullets li {
+    padding-left: 20px;
+    position: relative;
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .exp-bullets li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--cyan);
+    font-size: 0.75rem;
+    top: 2px;
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .skill-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 28px;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--cyan);
+    box-shadow: var(--glow);
+  }
+
+  .skill-card:hover {
+    border-color: var(--cyan2);
+    transform: translateY(-4px);
+  }
+
+  .skill-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 14px;
+    color: var(--cyan);
+  }
+
+  .skill-category {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .skill-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    padding: 4px 10px;
+    border: 1px solid rgba(0,229,255,0.2);
+    color: var(--dim);
+    letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+
+  .tag:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  /* ── CERTS & EDUCATION ── */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  .cert-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 24px 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s;
+  }
+
+  .cert-card:hover { border-color: var(--cyan2); }
+
+  .cert-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    background: rgba(0,229,255,0.08);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cyan);
+  }
+
+  .cert-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .cert-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .cert-issuer {
+    font-size: 0.8rem;
+    color: var(--dim);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 40px;
+    text-align: center;
+  }
+
+  .footer-inner {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--dim);
+    letter-spacing: 2px;
+  }
+
+  .footer-inner a {
+    color: var(--cyan);
+    text-decoration: none;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--cyan2); }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AV<span>.sys</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="about">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag">// Systems Engineer & IT Specialist</div>
+      <h1 class="hero-name">Adnan<br><em>Vohra</em></h1>
+      <div class="hero-title">L2 IT/OT · Sysadmin · Cybersecurity</div>
+
+      <div class="contact-bar">
+        <div class="contact-item">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 4l8 9 8-9"/></svg>
+          vohraadnan11@gmail.com
+        </div>
+        <div class="contact-item">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.08 5.18 2 2 0 015.09 3h3a2 2 0 012 1.72c.128.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 10.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.572 2.81.7A2 2 0 0122 17.92z"/></svg>
+          +91 87809 72908
+        </div>
+        <div class="contact-item">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/><path d="M2 12h20"/></svg>
+          linkedin.com/in/adnan-vohra11
+        </div>
+        <div class="contact-item">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Vadodara, Gujarat, India
+        </div>
+      </div>
+
+      <p class="hero-summary">
+        IT Support Specialist and Systems Engineer with 4+ years of experience in L2 IT/OT support, Windows &amp; Linux administration, cybersecurity incident response, and enterprise asset management across multi-site environments.
+      </p>
+      <div class="hero-cta">
+        <a href="#experience" class="btn">View Experience</a>
+        <a href="mailto:vohraadnan11@gmail.com" class="btn btn-fill">Contact Me</a>
+      </div>
+    </div>
+
+    <!-- SVG DIAGRAM -->
+    <div class="hero-diagram">
+      <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <defs>
+          <radialGradient id="grd" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Background circle -->
+        <circle cx="240" cy="240" r="210" fill="url(#grd)"/>
+        <circle cx="240" cy="240" r="210" stroke="rgba(0,229,255,0.08)" stroke-width="1"/>
+        <circle cx="240" cy="240" r="160" stroke="rgba(0,229,255,0.06)" stroke-width="1" stroke-dasharray="4 8"/>
+        <circle cx="240" cy="240" r="110" stroke="rgba(0,229,255,0.08)" stroke-width="1"/>
+
+        <!-- Orbit dots -->
+        <circle cx="240" cy="30" r="4" fill="#00e5ff" filter="url(#glow)"/>
+        <circle cx="430" cy="240" r="4" fill="#00e5ff" filter="url(#glow)"/>
+        <circle cx="240" cy="450" r="4" fill="#00e5ff" filter="url(#glow)"/>
+        <circle cx="50" cy="240" r="4" fill="#00e5ff" filter="url(#glow)"/>
+
+        <!-- Center node -->
+        <circle cx="240" cy="240" r="48" fill="rgba(0,229,255,0.06)" stroke="#00e5ff" stroke-width="1.5" filter="url(#glow)"/>
+        <circle cx="240" cy="240" r="32" fill="rgba(0,229,255,0.1)" stroke="rgba(0,229,255,0.3)" stroke-width="1"/>
+        <text x="240" y="236" text-anchor="middle" fill="#00e5ff" font-family="Share Tech Mono" font-size="9" letter-spacing="1">SYSTEMS</text>
+        <text x="240" y="250" text-anchor="middle" fill="#00e5ff" font-family="Share Tech Mono" font-size="9" letter-spacing="1">ENGINEER</text>
+
+        <!-- Connector lines -->
+        <line x1="240" y1="192" x2="240" y2="100" stroke="rgba(0,229,255,0.3)" stroke-width="1" stroke-dasharray="3 4"/>
+        <line x1="288" y1="240" x2="380" y2="140" stroke="rgba(0,229,255,0.3)" stroke-width="1" stroke-dasharray="3 4"/>
+        <line x1="288" y1="260" x2="380" y2="340" stroke="rgba(0,229,255,0.3)" stroke-width="1" stroke-dasharray="3 4"/>
+        <line x1="192" y1="240" x2="100" y2="140" stroke="rgba(0,229,255,0.3)" stroke-width="1" stroke-dasharray="3 4"/>
+        <line x1="192" y1="260" x2="100" y2="340" stroke="rgba(0,229,255,0.3)" stroke-width="1" stroke-dasharray="3 4"/>
+        <line x1="240" y1="288" x2="240" y2="372" stroke="rgba(0,229,255,0.3)" stroke-width="1" stroke-dasharray="3 4"/>
+
+        <!-- Node: Windows/AD -->
+        <rect x="185" y="64" width="110" height="42" rx="2" fill="rgba(10,20,40,0.9)" stroke="rgba(0,229,255,0.4)" stroke-width="1"/>
+        <text x="240" y="82" text-anchor="middle" fill="#00e5ff" font-family="Share Tech Mono" font-size="8" letter-spacing="1">WINDOWS SERVER</text>
+        <text x="240" y="97" text-anchor="middle" fill="#607090" font-family="Share Tech Mono" font-size="7">Active Directory · Hyper-V</text>
+
+        <!-- Node: Cybersecurity -->
+        <rect x="340" y="98" width="110" height="42" rx="2" fill="rgba(10,20,40,0.9)" stroke="rgba(0,229,255,0.4)" stroke-width="1"/>
+        <text x="395" y="116" text-anchor="middle" fill="#00e5ff" font-family="Share Tech Mono" font-size="8" letter-spacing="1">CYBERSECURITY</text>
+        <text x="395" y="131" text-anchor="middle" fill="#607090" font-family="Share Tech Mono" font-size="7">DevSecOps · Incident Resp.</text>
+
+        <!-- Node: ServiceNow -->
+        <rect x="340" y="318" width="110" height="42" rx="2" fill="rgba(10,20,40,0.9)" stroke="rgba(0,229,255,0.4)" stroke-width="1"/>
+        <text x="395" y="336" text-anchor="middle" fill="#00e5ff" font-family="Share Tech Mono" font-size="8" letter-spacing="1">ITSM</text>
+        <text x="395" y="351" text-anchor="middle" fill="#607090" font-family="Share Tech Mono" font-size="7">ServiceNow · CMDB · SLA</text>
+
+        <!-- Node: Linux -->
+        <rect x="30" y="98" width="110" height="42" rx="2" fill="rgba(10,20,40,0.9)" stroke="rgba(0,229,255,0.4)" stroke-width="1"/>
+        <text x="85" y="116" text-anchor="middle" fill="#00e5ff" font-family="Share Tech Mono" font-size="8" letter-spacing="1">LINUX / NETWORK</text>
+        <text x="85" y="131" text-anchor="middle" fill="#607090" font-family="Share Tech Mono" font-size="7">TCP/IP · DNS · VPN</text>
+
+        <!-- Node: OT -->
+        <rect x="30" y="318" width="110" height="42" rx="2" fill="rgba(10,20,40,0.9)" stroke="rgba(0,229,255,0.4)" stroke-width="1"/>
+        <text x="85" y="336" text-anchor="middle" fill="#00e5ff" font-family="Share Tech Mono" font-size="8" letter-spacing="1">IT / OT SYSTEMS</text>
+        <text x="85" y="351" text-anchor="middle" fill="#607090" font-family="Share Tech Mono" font-size="7">PLC · MES · SCADA · CCTV</text>
+
+        <!-- Node: Automation -->
+        <rect x="185" y="376" width="110" height="42" rx="2" fill="rgba(10,20,40,0.9)" stroke="rgba(0,229,255,0.4)" stroke-width="1"/>
+        <text x="240" y="394" text-anchor="middle" fill="#00e5ff" font-family="Share Tech Mono" font-size="8" letter-spacing="1">AUTOMATION</text>
+        <text x="240" y="409" text-anchor="middle" fill="#607090" font-family="Share Tech Mono" font-size="7">Power Automate · APIs</text>
+
+        <!-- Animated pulse rings -->
+        <circle cx="240" cy="240" r="60" stroke="#00e5ff" stroke-width="0.5" stroke-opacity="0.4" fill="none">
+          <animate attributeName="r" from="60" to="200" dur="4s" repeatCount="indefinite"/>
+          <animate attributeName="stroke-opacity" from="0.4" to="0" dur="4s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="240" cy="240" r="60" stroke="#00e5ff" stroke-width="0.5" stroke-opacity="0.4" fill="none">
+          <animate attributeName="r" from="60" to="200" dur="4s" begin="2s" repeatCount="indefinite"/>
+          <animate attributeName="stroke-opacity" from="0.4" to="0" dur="4s" begin="2s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrapper">
+    <div class="section-label reveal">// 02. Experience</div>
+    <h2 class="section-title reveal">Work History</h2>
+    <div class="section-line reveal"></div>
+
+    <div class="timeline">
+
+      <div class="exp-card reveal">
+        <div class="exp-header">
+          <div class="exp-company">Algreen North America</div>
+          <div class="exp-dates">Jan 2023 — Jan 2026</div>
+        </div>
+        <div class="exp-role">L2 ENGINEER &amp; SYSADMIN</div>
+        <div class="exp-location">Cambridge, ON, Canada</div>
+        <ul class="exp-bullets">
+          <li>Delivered end-to-end IT/OT support across factory and enterprise environments — kiosks, MES hardware, scanners, CCTV, and badging systems across multi-site operations.</li>
+          <li>Administered Windows Server 2022, Active Directory, Hyper-V, MS Office 365, and MDM ensuring 99%+ uptime.</li>
+          <li>Developed and modified PLC ladder logics, sensors, and motor drives to meet operational demands.</li>
+          <li>Managed incidents and service requests via ITSM portal, maintaining SLA compliance and accurate CMDB asset records.</li>
+          <li>Ensured compliance with IT/OT regulations; collaborated with vendors on system configuration and security hardening.</li>
+        </ul>
+      </div>
+
+      <div class="exp-card reveal">
+        <div class="exp-header">
+          <div class="exp-company">Algreen North America</div>
+          <div class="exp-dates">Jan 2023 — Feb 2024</div>
+        </div>
+        <div class="exp-role">ECOMMERCE SPECIALIST</div>
+        <div class="exp-location">Cambridge, ON, Canada</div>
+        <ul class="exp-bullets">
+          <li>Managed Shopify store end-to-end, driving $500K+ in annual revenue through SEO, product optimization, and marketing automation.</li>
+          <li>Integrated Google Analytics, Facebook Pixel, and third-party APIs for data-driven performance monitoring.</li>
+          <li>Maintained product catalogue via bulk CSV imports, automated inventory sync, and SKU mapping.</li>
+        </ul>
+      </div>
+
+      <div class="exp-card reveal">
+        <div class="exp-header">
+          <div class="exp-company">Algreen North America</div>
+          <div class="exp-dates">May 2021 — Dec 2022</div>
+        </div>
+        <div class="exp-role">IT OPERATIONS SPECIALIST</div>
+        <div class="exp-location">Cambridge, ON, Canada</div>
+        <ul class="exp-bullets">
+          <li>Automated warehouse workflows using ShipStation and Microsoft Power Automate, significantly reducing processing time.</li>
+          <li>Developed an internal inventory management system synchronizing stock across multiple company warehouses.</li>
+          <li>Coordinated with production, sales, and logistics teams to ensure timely and accurate order fulfillment.</li>
+        </ul>
+      </div>
+
+      <div class="exp-card reveal">
+        <div class="exp-header">
+          <div class="exp-company">S.M. Technologies</div>
+          <div class="exp-dates">Dec 2019 — Nov 2020</div>
+        </div>
+        <div class="exp-role">INTERN — JUNIOR SYSTEM ADMIN</div>
+        <div class="exp-location">Anand, Gujarat, India</div>
+        <ul class="exp-bullets">
+          <li>Administered Windows Server environments, managing Active Directory users, print servers, and access permissions for secure network operations.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrapper">
+    <div class="section-label reveal">// 03. Skillset</div>
+    <h2 class="section-title reveal">Technical Skills</h2>
+    <div class="section-line reveal"></div>
+
+    <div class="skills-grid">
+
+      <div class="skill-card reveal">
+        <svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/>
+        </svg>
+        <div class="skill-category">Infrastructure</div>
+        <div class="skill-title">OS &amp; Servers</div>
+        <div class="skill-tags">
+          <span class="tag">Windows Server 2022</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Active Directory</span>
+          <span class="tag">Hyper-V</span>
+          <span class="tag">MS 365 Admin</span>
+          <span class="tag">iOS MDM</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <div class="skill-category">Security</div>
+        <div class="skill-title">Cybersecurity</div>
+        <div class="skill-tags">
+          <span class="tag">IT/OT Incident Response</span>
+          <span class="tag">DevSecOps</span>
+          <span class="tag">Security Patch Mgmt</span>
+          <span class="tag">Network Security</span>
+          <span class="tag">SOC 2</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+        </svg>
+        <div class="skill-category">Networking</div>
+        <div class="skill-title">Network &amp; Connectivity</div>
+        <div class="skill-tags">
+          <span class="tag">TCP/IP</span>
+          <span class="tag">DNS</span>
+          <span class="tag">DHCP</span>
+          <span class="tag">VPN</span>
+          <span class="tag">LAN/WAN</span>
+          <span class="tag">Routing/Switching</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/>
+        </svg>
+        <div class="skill-category">ITSM</div>
+        <div class="skill-title">IT Service Management</div>
+        <div class="skill-tags">
+          <span class="tag">ServiceNow</span>
+          <span class="tag">CMDB</span>
+          <span class="tag">SLA Management</span>
+          <span class="tag">IT Asset Mgmt</span>
+          <span class="tag">MS Dynamics 365</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+        </svg>
+        <div class="skill-category">Automation</div>
+        <div class="skill-title">Scripting &amp; Automation</div>
+        <div class="skill-tags">
+          <span class="tag">Power Automate</span>
+          <span class="tag">Bash/Shell</span>
+          <span class="tag">REST APIs</span>
+          <span class="tag">API Integration</span>
+          <span class="tag">ShipStation</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/>
+          <line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>
+        </svg>
+        <div class="skill-category">OT Systems</div>
+        <div class="skill-title">Industrial IT/OT</div>
+        <div class="skill-tags">
+          <span class="tag">PLC / Ladder Logic</span>
+          <span class="tag">MES Hardware</span>
+          <span class="tag">SCADA</span>
+          <span class="tag">CCTV Systems</span>
+          <span class="tag">Badging Systems</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION & CERTIFICATIONS -->
+<section id="education">
+  <div class="wrapper">
+    <div class="section-label reveal">// 04. Education &amp; Certifications</div>
+    <h2 class="section-title reveal">Credentials</h2>
+    <div class="section-line reveal"></div>
+
+    <div class="certs-grid">
+
+      <div class="cert-card reveal">
+        <div class="cert-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div>
+          <div class="cert-year">2022</div>
+          <div class="cert-name">Electrical Engineering Technician</div>
+          <div class="cert-issuer">Conestoga College, Canada &nbsp;·&nbsp; GPA 3.27 &nbsp;·&nbsp; First Class Distinction</div>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div>
+          <div class="cert-year">2019</div>
+          <div class="cert-name">Diploma, Electrical Engineering</div>
+          <div class="cert-issuer">Gujarat Technological University &nbsp;·&nbsp; GPA 3.48 &nbsp;·&nbsp; First Class Distinction</div>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div class="cert-year">Aug 2025</div>
+          <div class="cert-name">IT Security Fundamentals (ITS105S)</div>
+          <div class="cert-issuer">Communications Security Establishment, Govt. of Canada</div>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div class="cert-year">Nov 2024</div>
+          <div class="cert-name">Introduction to DevSecOps (APP103S)</div>
+          <div class="cert-issuer">Communications Security Establishment, Govt. of Canada</div>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/><path d="M2 12h20"/></svg>
+        </div>
+        <div>
+          <div class="cert-year">Mar 2024</div>
+          <div class="cert-name">Google IT Support Specialization</div>
+          <div class="cert-issuer">Google Career Certificates &nbsp;·&nbsp; Online</div>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-icon">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div>
+          <div class="cert-year">2022</div>
+          <div class="cert-name">Drone Pilot — Basic Operations</div>
+          <div class="cert-issuer">Transport Canada</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <span style="color:var(--cyan)">Adnan Vohra</span> &nbsp;·&nbsp; IT Systems Engineer &nbsp;·&nbsp; Vadodara, India
+    &nbsp;·&nbsp; <a href="mailto:vohraadnan11@gmail.com">vohraadnan11@gmail.com</a>
+    <br><br>
+    <span style="color:var(--dim);font-size:0.65rem">// Built for GitHub Pages</span>
+  </div>
+</footer>
+
+<script>
+// ── CANVAS PARTICLE FIELD ──
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.3;
+    this.alpha = Math.random() * 0.5 + 0.1;
+    this.r = Math.random() * 1.5 + 0.5;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,229,255,${this.alpha})`;
+    ctx.fill();
+  }
+}
+
+function initParticles() {
+  particles = Array.from({ length: 100 }, () => new Particle());
+}
+
+function drawConnections() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(0,229,255,${0.08 * (1 - dist / 120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => { p.update(); p.draw(); });
+  drawConnections();
+  requestAnimationFrame(animate);
+}
+
+resize();
+initParticles();
+animate();
+window.addEventListener('resize', () => { resize(); });
+
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
